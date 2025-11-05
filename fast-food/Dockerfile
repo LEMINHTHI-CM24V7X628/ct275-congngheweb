@@ -1,18 +1,23 @@
-# Sử dụng PHP 8.2 với Apache
 FROM php:8.2-apache
 
-# Cài các extension cần cho PostgreSQL
+# Cài extension cần thiết
 RUN apt-get update && apt-get install -y libpq-dev \
     && docker-php-ext-install pdo pdo_pgsql pgsql
 
-# Copy toàn bộ mã nguồn vào thư mục web
-COPY . /var/www/html/
+# Copy toàn bộ source code
+COPY fast-food/ /var/www/html/
 
-# Phân quyền để Apache có thể truy cập
+# Đặt thư mục làm webroot (nếu index.php nằm trong fast-food)
+WORKDIR /var/www/html/
+
+# Cấu hình Apache cho phép PHP MVC (rewrite URLs)
+RUN a2enmod rewrite
+COPY ./fast-food/.htaccess /var/www/html/.htaccess
+
+# Sửa quyền
 RUN chown -R www-data:www-data /var/www/html
 
-# Mở port 80 để Render truy cập
+# Mở port
 EXPOSE 80
 
-# Chạy Apache khi container khởi động
 CMD ["apache2-foreground"]
