@@ -1,19 +1,18 @@
+# Sử dụng PHP 8.2 với Apache
 FROM php:8.2-apache
 
-# Cài các extension cần thiết
-RUN docker-php-ext-install pdo pdo_pgsql pgsql
+# Cài các extension cần cho PostgreSQL
+RUN apt-get update && apt-get install -y libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql pgsql
 
-# Copy toàn bộ mã nguồn hiện tại vào thư mục web
+# Copy toàn bộ mã nguồn vào thư mục web
 COPY . /var/www/html/
 
-# Đặt thư mục làm việc
-WORKDIR /var/www/html
-
-# Phân quyền cho Apache
+# Phân quyền để Apache có thể truy cập
 RUN chown -R www-data:www-data /var/www/html
 
-# Mở cổng 80
+# Mở port 80 để Render truy cập
 EXPOSE 80
 
-# Chạy Apache
+# Chạy Apache khi container khởi động
 CMD ["apache2-foreground"]
