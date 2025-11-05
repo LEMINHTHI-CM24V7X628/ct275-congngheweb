@@ -16,3 +16,17 @@ try {
     die("<h3 style='color:red'>Kết nối thất bại: " . htmlspecialchars($e->getMessage()) . "</h3>");
 }
 ?>
+<?php
+$host = getenv('DB_HOST');
+$port = getenv('DB_PORT');
+$dbname = getenv('DB_NAME');
+$user = getenv('DB_USER');
+$password = getenv('DB_PASS');
+
+try {
+    $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Lỗi kết nối CSDL: " . $e->getMessage());
+}
+?>
