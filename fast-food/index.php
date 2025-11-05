@@ -1,4 +1,8 @@
 <?php
+echo "FastFood T&D is running successfully!";
+?>
+
+<?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
