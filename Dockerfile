@@ -1,20 +1,20 @@
-# Sử dụng image PHP + Apache
+# Sử dụng PHP + Apache
 FROM php:8.2-apache
 
-# Cài đặt PostgreSQL extensions
+# Cài các extension cần thiết cho PostgreSQL
 RUN docker-php-ext-install pdo pdo_pgsql pgsql
 
-# Copy toàn bộ mã nguồn trong thư mục fast-food vào Apache
+# Sao chép mã nguồn vào thư mục web của Apache
 COPY fast-food/ /var/www/html/
 
-# Đặt working directory
+# Thiết lập thư mục làm việc
 WORKDIR /var/www/html/
 
-# Cấp quyền truy cập cho Apache
+# Cấp quyền cho Apache
 RUN chown -R www-data:www-data /var/www/html
 
-# Expose cổng 80
+# Mở cổng 80
 EXPOSE 80
 
-# Khởi động Apache
+# Chạy Apache khi container khởi động
 CMD ["apache2-foreground"]
